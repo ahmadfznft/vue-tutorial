@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="./vuelogo.png" type="image/png">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="mengurangi()">-</button> <!--bisa juga memakai @click!-->
+        <span>{{count}}</span>
+        <button v-on:click="menambah()">+</button> <!--bisa juga memakai @click!-->
+        <br><br>
+        <button @click="sayHello(' zann ')">say hello</button>
+        <br><br>
+        <input type="text" v-on:keydown.enter="sayHello('zann')"> <!-- /keyup, v-on juga bisa diganti dengan @ !-->
+        <br><br>
+        <form method="post" action="#" v-on:submit.prevent>
+            <input type="text">
+            <input type="submit" value="send">
+        </form>
+    </div>
+
+    <script type="module">
+        import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+        createApp({
+            data() {
+                return {
+                    count: 0
+                }
+            },
+            methods: {
+                mengurangi() {
+                    this.count--
+                },
+                menambah() {
+                    this.count++
+                },
+                sayHello(whatever) {
+                    alert('Hello' + whatever)
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

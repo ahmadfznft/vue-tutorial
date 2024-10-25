@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="./img/logo.png" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Pokemon App</title>
+</head>
+
+<style>
+    body {
+        background-color: #343a40;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        padding: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card img {
+        border-radius: 8px;
+        max-width: 80%;
+        height: auto;
+        margin: 10px auto;
+    }
+
+    .card label {
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .view-detail {
+        text-align: center;
+    }
+
+    h2 {
+        color: #fff;
+        font-size: 2rem;
+        margin-top: 10px;
+    }
+
+    .pokemon-info label {
+        font-weight: bold;
+        color: #17a2b8;
+    }
+
+    .pokemon-info span {
+        font-weight: bold;
+        color: #ffc107;
+    }
+
+    .btn-info {
+        margin-bottom: 20px;
+    }
+
+    .skills-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        /* Jarak antar skill */
+        margin-top: 10px;
+    }
+
+    .skill-item {
+        display: inline-block;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .types-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 5px;
+    }
+
+    .badge-type {
+        background-color: #17a2b8;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-weight: bold;
+        text-transform: capitalize;
+        /* Membuat huruf pertama kapital */
+    }
+
+    .suggested-pokemon{
+        cursor: pointer;
+    }
+</style>
+
+<body>
+
+    <div id="app">
+
+        <div class="container-fluid bg-dark">
+            <div class="container bg-dark bg-gradient" style="min-height: 100vh;">
+                <div class="row justify-content-center">
+                    <div class="col-5">
+                        <img src="https://en.m.wikipedia.org/wiki/File:International_Pok%C3%A9mon_logo.svg" style="max-width: 500px; height: auto;">
+                    </div>
+                </div>
+
+                <div class="row justify-content-center mt-5">
+                    <div class="col-6">
+                        <input type="search" class="form-control" placeholder="search pokemon" v-model="search">
+                        <div class="text-white mt-4">
+                            <label for="">Sugestion :</label> <span class="suggested-pokemon" v-for="i in suggestedPokemon" @click="viewDetailPokemon(i.name)">{{i.name}} | </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main mt-5 pt-5">
+                    <!-- Bagian list semua Pokemon -->
+                    <div class="view-all text-white" v-if="!viewedAsDetail">
+                        <div class="row px-5">
+                            <div class="col-12 col-md-4 col-lg-3 mb-3 mb-4" v-for="item in pokemonList"
+                                @click="viewDetailPokemon(item.name)">
+                                <div class="card text-center">
+                                    <img :src="item.sprites.front_default" alt="">
+                                    <label style="font-size: 18px;">{{item.name}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="view-detail text-white" v-else>
+                        <div class="mb-5">
+                            <button type="button" class="btn btn-info text-white" @click="viewedAsDetail = false">View
+                                All Pokemon</button>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="card text-center p-3">
+                                    <img v-if="selectedPokemon && selectedPokemon.sprites"
+                                        :src="selectedPokemon.sprites.front_default" alt="  " class="img-fluid"
+                                        style="max-width: 350px;">
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="pokemon-info p-3">
+
+                                    <h1 class="text-white">{{ selectedPokemon.name }}</h1>
+
+                                    <!-- Tipe Pokemon -->
+                                    <p class="mt-3">
+                                        <label class="text-info" style="font-size: 18px;">Tipe:</label>
+                                    <div class="types-wrapper">
+                                        <span v-for="(type, index) in selectedPokemon.types" :key="index"
+                                            class="badge-type">
+                                            {{ type.type.name }}
+                                        </span>
+                                    </div>
+                                    </p>
+                                    <!-- Skill Pokemon -->
+                                    <p class="mt-3">
+                                        <label class="text-info" style="font-size: 18px;">Skill:</label>
+                                    <div class="skills-wrapper">
+                                        <span
+                                            v-for="(i, index) in (showAllSkills ? selectedPokemon.moves : selectedPokemon.moves.slice(0, 5))"
+                                            :key="index" class="text-warning skill-item" style="font-size: 16px;">
+                                            {{ i.move.name }}
+                                        </span>
+                                    </div>
+                                    <button v-if="selectedPokemon.moves.length > 5" class="btn btn-link text-info"
+                                        @click="toggleShowAllSkills">
+                                        {{ showAllSkills ? 'Sembunyikan' : 'Lihat Lainnya' }}
+                                    </button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+
+            </div>
+
+
+            <script type="module">
+                import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+                createApp({
+                    data() {
+                        return {
+                            pokemonList: [],
+                            viewedAsDetail: false,
+                            selectedPokemon: '',
+                            showAllSkills: false,
+                            search: '',
+                            gen1Pokemon: [],
+                            suggestedPokemon: '',
+                        }
+                    },
+                    methods: {
+                        async getListPokemon() {
+                            let response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=56"); // Limitnya bisa ditambah sesuai kebutuhan
+                            let data = await response.json();
+                            let results = data.results;
+
+                            results.forEach(item => {
+                                this.getEachPokemon(item)
+                            });
+                        },
+                        async getEachPokemon(pokemon) {
+                            let response = await fetch("https://pokeapi.co/api/v2/pokemon/" + pokemon.name); // Concatenate dengan '/' di URL
+                            let data = await response.json();
+                            // console.log(data);
+                            this.pokemonList.push(data);
+                            this.pokemonList.sort((a, b) => a.id - b.id);
+                        },
+                        async viewDetailPokemon(pokemonName) {
+                            this.viewedAsDetail = true
+                            let response = await fetch("https://pokeapi.co/api/v2/pokemon/" + pokemonName); // Concatenate dengan '/' di URL
+                            let data = await response.json();
+                            console.log(data);
+                            this.selectedPokemon = data;
+                        },
+                        async getGen1Pokemon(pokemonName) {
+                            let response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151"); // Limitnya bisa ditambah sesuai kebutuhan
+                            let data = await response.json();
+                            let result = data.results;
+
+                            this.gen1Pokemon = result
+                        },
+                        selectPokemon(pokemon) {
+                            this.selectedPokemon = pokemon;
+                        },
+                        toggleShowAllSkills() {
+                            this.showAllSkills = !this.showAllSkills;
+                        }
+                    },
+                    watch: {
+                        search(value) {
+                            let filteredPokemon = this.gen1Pokemon.filter(item => {
+                                return item.name.includes(this.search)
+                            })
+
+                            this.suggestedPokemon = filteredPokemon.slice(0, 3);
+                        }
+                    },
+                    mounted() {
+                        this.getListPokemon();
+                        this.getGen1Pokemon();
+                    }
+                }).mount('#app')
+            </script>
+
+</body>
+
+</html>

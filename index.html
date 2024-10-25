@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="./vuelogo.png" type="image/png">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <div>
+            <button @click="kurang( )"> - </button>
+            {{ count }}
+            <button @click="tambah()"> + </button>
+        </div>
+
+        <div>
+            {{ message }}
+        </div>
+
+        <div v-text="message2">
+            random text
+        </div>
+
+        <div v-html="message3">
+            ini random text
+        </div>
+    </div>
+
+
+
+
+    <script type="module">
+        import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+        createApp({
+            data() {
+                return {
+                    count: 0,
+                    message: 'hello world',
+                    message2: 'ini akan me replace text',
+                    message3: '<strong>tulisan bold</strong>',
+                }
+            },
+            methods: {
+                tambah() {
+                    this.count++
+                },
+                kurang() {
+                    if (this.count > 0) {
+                        this.count--
+                    }
+                }
+            }
+        }).mount('#app')
+    </script>
+
+</body>
+
+</html>

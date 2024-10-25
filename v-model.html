@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="./vuelogo.png" type="image/png">
+    <title>Document</title>
+</head>
+
+
+<div id="app">
+    <div>
+        <label for="">Username : </label>
+        <input type="text" placeholder="username" v-model="username">
+    </div>
+    <br><br>
+
+    <label for="">Addres : </label>
+    <div>
+        <textarea name="" id="" cols="30" rows="5" v-model="address"></textarea>
+    </div>
+
+    <div>
+        <label for="">Gender</label>
+        <input type="radio" value="pria" v-model="gender">Pria
+        <input type="radio" value="wanita" v-model="gender">Wanita
+    </div>
+
+    <br><br>
+
+    <div>
+        <label for="">Hobi :</label> <br>
+
+        <label for="">Sepak Bola</label>
+        <input type="checkbox" value="sepak bola" v-model="hobby">
+        <br>
+        <label for="">Renang</label>
+        <input type="checkbox" value="renang" v-model="hobby">
+        <br>
+        <label for="">Bulutangkis</label>
+        <input type="checkbox" value="bulutangkis" v-model="hobby">
+    </div>
+
+    <div>
+        <label for="">Role :</label>
+        <select name="role" id="role" v-model="role">
+            <option disabled value>pilih satu</option>
+            <option value="admin">admin</option>
+            <option value="staf">staf</option>
+        </select>
+    </div>
+
+
+    <div>
+        <p>
+            username: {{username}}
+        </p>
+        <p>
+            address: {{address}}
+        </p>
+        <p>
+            gender: {{gender}}
+        </p>
+        <p>
+            Hobi :
+            <span v-if="hobby.length > 0">
+                <ul v-for="item in hobby">
+                    <li>{{item}}</li>
+                </ul>
+            </span>
+        </p>
+        <p>
+            role: {{role}}
+        </p>
+    </div>
+
+</div>
+
+
+
+
+<script type="module">
+    import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+    createApp({
+        data() {
+            return {
+                username: '',
+                address: '',
+                gender: '',
+                hobby: [],
+                role: '',
+            }
+        }
+    }).mount('#app')
+</script>
+
+</body>
+
+</html>

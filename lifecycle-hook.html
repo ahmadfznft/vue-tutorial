@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="./vuelogo.png" type="image/png">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <input type="text" value="whatever" ref="inputan">
+        <br><br>
+
+        <input type="text" :value="count" ref="hitungan">
+        <button @click="count++">Add</button>
+    </div>
+
+
+    <script type="module">
+        import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+        createApp({
+            data() {
+                return {
+                    message: 'hello world',
+                    count: 0
+                }
+            },
+            beforeCreate() {
+                console.log(`before create : ${this.message}`);
+            },
+            created() {
+                console.log(`created : ${this.message}`);
+            },
+            beforeMount() {
+                console.log(`before mount : ${this.$refs.inputan}`);
+            },
+            mounted() {
+                console.log(`mounted : ${this.$refs.inputan.value}`);
+            },
+            beforeUpdate() {
+                console.log(`before update : ${this.$refs.hitungan.value}`);
+            },
+            updated() {
+                console.log(`updated : ${this.$refs.hitungan.value}`);
+            }
+        }).mount('#app')
+    </script>
+
+</body>
+
+</html>

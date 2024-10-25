@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="./vuelogo.png" type="image/png">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <span v-if="tampil">
+            {{message}}
+        </span>
+
+        <!-- <span v-else>
+            message tidak ada 
+        </span>
+
+        <div v-if="nilai > 8">
+            Predikat A
+        </div>
+
+        <div v-else-if="nilai <= 8 && nilai > 6">
+            Predikat B
+        </div>
+
+        <div v-else>
+            Predikat C
+        </div> -->
+
+        <div v-show="stateLampu">
+            lampu hidup
+        </div>
+        <button @click="toggleLampu()">Pencet Saklar</button> 
+
+    <script type="module">
+        import { createApp, ref } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+        createApp({
+            data() {
+                return {
+                    // message: 'hello',
+                    // tampil: true,
+                    // nilai: 8
+
+                    stateLampu: false,
+                }
+            },
+            methods: {
+                toggleLampu() {
+                    this.stateLampu = !this.stateLampu
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

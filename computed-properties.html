@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="./vuelogo.png" type="image/png">
+    <title>Document</title>
+</head>
+
+
+<div id="app">
+    <form action="">
+        <input type="text" placeholder="first name" v-model="firstName">
+        <input type="text" placeholder="Last name" v-model="lastName">
+    </form>
+    <br><br>
+    <div>
+        Full Name: {{fullName}}
+    </div>
+</div>
+
+
+
+
+<script type="module">
+    import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+    createApp({
+        data() {
+            return {
+                firstName: '',
+                lastName: '',
+            }
+        },
+        computed: {
+            fullName() {
+                return this.firstName + ' ' + this.lastName
+            }
+        }
+    }).mount('#app')
+</script>
+
+</body>
+
+</html>
